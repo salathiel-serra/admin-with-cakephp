@@ -62,4 +62,19 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
     }
+
+    public function beforeRender(Event $event)
+    {
+        $prefix = NULL;
+        if ($this->request->getParam(['prefix']) != NULL) {
+            $prefix = $this->request->getParam(['prefix']);
+        }
+
+        if ($prefix == 'admin') {
+            if (($this->request->getParam(['action']) != NULL) AND ($this->request->getParam(['action']) == 'login')) {
+                $this->viewBuilder()->setLayout('login');
+            }
+        }
+
+    }
 }
