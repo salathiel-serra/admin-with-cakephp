@@ -59,7 +59,7 @@ class UsersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Erro ao cadastrar usuário.'));
+            $this->Flash->danger(__('Erro ao cadastrar usuário.'));
         }
         $this->set(compact('user'));
     }
@@ -83,7 +83,7 @@ class UsersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Erro ao atualizar usuário.'));
+            $this->Flash->danger(__('Erro ao atualizar usuário.'));
         }
         $this->set(compact('user'));
     }
@@ -102,7 +102,7 @@ class UsersController extends AppController
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('Usuário removido com sucesso.'));
         } else {
-            $this->Flash->error(__('Erro ao remover usuário.'));
+            $this->Flash->danger(__('Erro ao remover usuário.'));
         }
 
         return $this->redirect(['action' => 'index']);
