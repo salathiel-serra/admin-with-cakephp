@@ -112,12 +112,15 @@ class UsersController extends AppController
             if ($user) {
                 $this->Auth->setUser($user);
                 $this->redirect($this->Auth->redirectUrl());;
+            } else {
+                $this->Flash->danger(__('Usuário e/ou senha incorreto(s)'));
             }
         }
     }
 
     public function logout()
     {
+        $this->Flash->success(__('Usuário deslogado com sucesso!'));
         return $this->redirect( $this->Auth->logout() );
     }
 }

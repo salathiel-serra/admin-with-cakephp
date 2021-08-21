@@ -7,6 +7,9 @@
     ]) ?>
 
     <h1 class="h3 mb-3 font-weight-normal"> Área Restrita </h1>
+
+    <?= $this->Flash->render(); ?>
+
     <div class="form-group">
         <?php
             echo $this->Form->control('username', [
