@@ -24,11 +24,11 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <?= $this->Html->link('<i class="fas fa-user"></i> Perfil',
-                        ['controller' => 'users', 'action' => 'profile'],
+                        ['controller' => 'Users', 'action' => 'profile'],
                         ['class' => 'dropdown-item', 'escape' => false]
                     )?>
                     <?= $this->Html->link('<i class="fas fa-sign-out-alt"></i> Sair',
-                        ['controller' => 'users', 'action' => 'logout'],
+                        ['controller' => 'Users', 'action' => 'logout'],
                         ['class' => 'dropdown-item', 'escape' => false],
                         []
                     )?>

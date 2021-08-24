@@ -4,7 +4,7 @@
     </div>
         <div class="p-2">
             <?= $this->Html->link(__('Listar'), 
-                ['controller' => 'users', 'action' => 'index'], 
+                ['controller' => 'Users', 'action' => 'index'], 
                 ['class' => 'btn btn-outline-info btn-sm']) 
             ?>
         </div>
