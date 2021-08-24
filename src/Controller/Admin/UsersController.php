@@ -127,4 +127,11 @@ class UsersController extends AppController
         $this->Flash->success(__('Usuário deslogado com sucesso!'));
         return $this->redirect( $this->Auth->logout() );
     }
+
+    public function profile() 
+    {
+        $user = $this->Auth->user();
+
+        $this->set(compact('user'));
+    }
 }
