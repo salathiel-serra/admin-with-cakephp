@@ -88,6 +88,23 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
+    public function editPassword($id = null)
+    {
+        $user = $this->Users->get($id, [
+            'contain' => [],
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Senha do usuário: '.$user->name.', atualizada com sucesso.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->danger(__('Erro ao atualizar senha do usuário: '.$user->name));
+        }
+        $this->set(compact('user'));
+    }
+
     /**
      * Delete method
      *

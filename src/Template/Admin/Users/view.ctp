@@ -6,7 +6,8 @@
         <span class="d-none d-md-block">
             <?= $this->Html->link(__('Listar'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'btn btn-info btn-sm']) ?>
 
-            <?= $this->Html->link(__('Editar'), ['controller' => 'Users', 'action' => 'edit', $user->id], ['class' => 'btn btn-warning btn-sm']) ?>
+            <?= $this->Html->link(__('Editar usuário'), ['controller' => 'Users', 'action' => 'edit', $user->id], ['class' => 'btn btn-warning btn-sm']) ?>
+            <?= $this->Html->link(__('Editar senha'), ['controller' => 'Users', 'action' => 'editPassword', $user->id], ['class' => 'btn btn-warning btn-sm']) ?>
 
             <?= $this->Form->postLink(__('Excluir'), ['controller' => 'Users', 'action' => 'delete', $user->id], ['class' => 'btn btn-danger btn-sm', 'confirm' => __('Você deseja realmente excluir: {0}?', $user->name)]) ?>
 
@@ -19,6 +20,7 @@
                 <?= $this->Html->link(__('Listar'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
 
                 <?= $this->Html->link(__('Editar'), ['controller' => 'Users', 'action' => 'edit', $user->id], ['class' => 'dropdown-item']) ?>
+                <?= $this->Html->link(__('Editar senha'), ['controller' => 'Users', 'action' => 'editPassword', $user->id], ['class' => 'dropdown-item']) ?>
 
                 <?= $this->Form->postLink(__('Excluir'), ['controller' => 'Users', 'action' => 'delete', $user->id], ['class' => 'dropdown-item', 'confirm' => __('Você deseja realmente excluir: {0}?', $user->name)]) ?>                                    
             </div>
