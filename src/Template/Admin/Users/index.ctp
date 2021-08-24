@@ -33,7 +33,9 @@
                         <?= h($user->created) ?>                            
                     </td>
                     <td>
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
+                        <?= $this->Html->link(__('Exibir'), 
+                            ['controller' => 'users', 'action' => 'view', $user->id],
+                            ['class' => 'btn btn-sm btn-primary'] ) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>                           
                     </td>
