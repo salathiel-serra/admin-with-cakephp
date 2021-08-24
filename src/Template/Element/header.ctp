@@ -8,10 +8,22 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle menu-header" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <img class="rounded-circle" src="imagem/icon.png" width="20" height="20"> &nbsp;<span class="d-none d-sm-inline">Usuário</span>
+                    
+                    <?php if(!empty($userLogged['image'])) { ?>
+                        <?= $this->Html->image('../files/user/'.$userLogged['id'].'/'.$userLogged['image'],
+                        ['class'=>'rounded-circle', 'width' => '50', 'height' => '50']) ?>
+                    <?php } else { ?>
+                        <?= $this->Html->image('../files/user/avatar-default.jpeg',
+                        ['class'=>'rounded-circle', 'width' => '50', 'height' => '50']) ?>
+                    <?php }?>
+
+                    &nbsp;
+                    <span class="d-none d-sm-inline"> 
+                        <?= current( str_word_count( $userLogged['name'],2 ) ); ?> 
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fas fa-user"></i> Perfil</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-user"></i> </a>
                     <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Sair</a>
                 </div>
             </li>

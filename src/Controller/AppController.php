@@ -76,6 +76,9 @@ class AppController extends Controller
             if (($this->request->getParam(['action']) != NULL) AND ($this->request->getParam(['action']) == 'login')) {
                 $this->viewBuilder()->setLayout('login');
             } else {
+                $userLogged = $this->Auth->user();
+                $this->set( compact('userLogged') );
+                
                 $this->viewBuilder()->setLayout('admin');
             }
             
