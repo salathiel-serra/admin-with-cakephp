@@ -160,4 +160,25 @@ class UsersController extends AppController
 
         $this->set( compact('user') );
     }
+
+    public function editProfilePassword()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId, [
+            'contain' => [],
+        ]);
+        
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                
+                $this->Flash->success(__('Senha atualizada com sucesso.'));
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
+            }
+            $this->Flash->danger(__('Erro ao atualizar senha.'));
+        }
+
+        $this->set( compact('user') );
+    }
 }

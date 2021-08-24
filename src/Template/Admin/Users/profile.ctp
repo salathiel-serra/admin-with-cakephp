@@ -4,18 +4,16 @@
     </div>
     <div class="p-2">
         <span class="d-none d-md-block">
-            <?= $this->Html->link(__('Listar'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'btn btn-info btn-sm']) ?>
-
-            <?= $this->Html->link(__('Editar'), ['controller' => 'Users', 'action' => 'editProfile'], ['class' => 'btn btn-warning btn-sm']) ?>
+            <?= $this->Html->link(__('Editar perfil'), ['controller' => 'Users', 'action' => 'editProfile'], ['class' => 'btn btn-warning btn-sm']) ?>
+            <?= $this->Html->link(__('Editar senha'), ['controller' => 'Users', 'action' => 'editProfilePassword'], ['class' => 'btn btn-danger btn-sm']) ?>
         </span>
         <div class="dropdown d-block d-md-none">
             <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Ações
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
-                <?= $this->Html->link(__('Listar'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-
-                <?= $this->Html->link(__('Editar'), ['controller' => 'Users', 'action' => 'editProfile'], ['class' => 'dropdown-item']) ?>
+                <?= $this->Html->link(__('Editar perfil'), ['controller' => 'Users', 'action' => 'editProfile'], ['class' => 'dropdown-item']) ?>
+                <?= $this->Html->link(__('Editar senha'), ['controller' => 'Users', 'action' => 'editProfilePassword'], ['class' => 'dropdown-item']) ?>
             </div>
         </div>
     </div>
