@@ -3,5 +3,7 @@
 <hr>
 
 <pre>
-  <?php var_dump($userLogged)?>
+  <?php 
+    // var_dump($userLogged)
+  ?>
 </pre>
