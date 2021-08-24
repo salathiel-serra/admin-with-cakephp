@@ -32,12 +32,32 @@
                     <td class="d-none d-lg-table-cell">
                         <?= h($user->created) ?>                            
                     </td>
-                    <td>
-                        <?= $this->Html->link(__('Exibir'), 
-                            ['controller' => 'users', 'action' => 'view', $user->id],
-                            ['class' => 'btn btn-sm btn-primary'] ) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>                           
+                    <td class="text-center">
+                        <span class="d-none d-md-block">
+                            <?= $this->Html->link(__('Exibir'), 
+                                ['controller' => 'users', 'action' => 'view', $user->id],
+                                ['class' => 'btn btn-sm btn-primary'] ) ?>
+
+                            <?= $this->Html->link(__('Editar'), 
+                                ['controller' => 'users', 'action' => 'edit', $user->id], 
+                                ['class' => 'btn btn-warning btn-sm']) ?>
+
+                            <?= $this->Form->postLink(__('Excluir'), 
+                            ['controller' => 'users', 'action' => 'delete', $user->id], 
+                            ['class' => 'btn btn-danger btn-sm', 'confirm' => __('Você deseja realmente excluir: {0}?', $user->name)]) ?>
+                        </span>
+                        <div class="dropdown d-block d-md-none">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ações
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
+                                <?= $this->Html->link(__('Editar'), ['controller' => 'users', 'action' => 'view', $user->id], ['class' => 'dropdown-item']) ?>
+
+                                <?= $this->Html->link(__('Editar'), ['controller' => 'users', 'action' => 'edit', $user->id], ['class' => 'dropdown-item']) ?>
+
+                                <?= $this->Form->postLink(__('Excluir'), ['controller' => 'users', 'action' => 'delete', $user->id], ['class' =>'dropdown-item', 'confirm' => __('Você deseja realmente excluir: {0}?', $user->name)]) ?>
+                            </div>
+                        </div> 
                     </td>
                 </tr>
             <?php endforeach; ?>
