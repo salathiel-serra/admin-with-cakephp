@@ -155,7 +155,7 @@ class UsersController extends AppController
     public function editProfile()
     {
         $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId, [
+        $user   = $this->Users->get($userId, [
             'contain' => [],
         ]);
         
@@ -181,7 +181,7 @@ class UsersController extends AppController
     public function editProfilePassword()
     {
         $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId, [
+        $user   = $this->Users->get($userId, [
             'contain' => [],
         ]);
         
@@ -194,6 +194,43 @@ class UsersController extends AppController
                 return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
             }
             $this->Flash->danger(__('Erro ao atualizar senha.'));
+        }
+
+        $this->set( compact('user') );
+    }
+
+    public function changeProfileImage()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId, [
+            'contain' => [],
+        ]);
+
+        if($this->request->is(['patch', 'post', 'put'])) {
+            $imageName = $this->request->getData()['image']['name'];
+            $imageTemp = $this->request->getData()['image']['tmp_name'];
+            
+            $user         = $this->Users->newEntity();
+            $user->id     = $userId;
+            $user->image = $imageName;
+
+            $path = "files/user/".$userId."/".$imageName;
+            
+            if (move_uploaded_file($imageTemp, WWW_ROOT. $path)) {               
+                if ($this->Users->save($user)) {
+                    if($this->Auth->user('id') === $user->id){
+                        $user = $this->Users->get($userId, [
+                                'contain' => []
+                            ]);
+                        $this->Auth->setUser($user);
+                    }                    
+
+                    $this->Flash->success(__('Foto atualizada com sucesso'));
+                    return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
+                }else{
+                    $this->Flash->danger(__('Erro ao atualizar foto'));
+                }
+            }
         }
 
         $this->set( compact('user') );

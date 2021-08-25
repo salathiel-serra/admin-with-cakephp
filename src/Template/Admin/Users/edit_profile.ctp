@@ -4,7 +4,7 @@
   </div>
   <div class="p-2">
     <span class="d-none d-md-block">
-      <?= $this->Html->link(__('Exibir perfil'), ['controller' => 'Users', 'action' => 'profile'], ['class' => 'btn btn-warning btn-sm']); ?>
+      <?= $this->Html->link(__('Exibir perfil'), ['controller' => 'Users', 'action' => 'profile'], ['class' => 'btn btn-primary btn-sm']); ?>
     </span>
     <div class="dropdown d-block d-md-none">
       <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

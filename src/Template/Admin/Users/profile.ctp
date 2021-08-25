@@ -21,15 +21,27 @@
 <?= $this->Flash->render() ?>
 
 <dl class="row">
-    <dt class="col-sm-3">ID</dt>
-    <dd class="col-sm-9"><?= $user['id'] ?></dd>
+    <dt class="col-sm-3">Foto</dt>
+    <dd class="col-sm-9" style="margin-bottom:30px;">
+        <?php 
+            if(!empty($userLogged['image'])) { 
+                echo $this->Html->image('../files/user/'.$userLogged['id'].'/'.$userLogged['image'],
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);
+            } else {
+                echo $this->Html->image('../files/user/avatar-default.jpeg',
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);
+            } 
+        ?>
+        <?= $this->Html->link(__('Alterar foto'), ['action' => 'changeProfileImage'], ['class' => 'btn btn-sm btn-outline-primary']); ?>
+        
+    </dd>
 
-    <dt class="col-sm-3">Nome</dt>
-    <dd class="col-sm-9"><?= $user['name'] ?></dd>
+    <dt class="col-sm-3"> Nome </dt>
+    <dd class="col-sm-9"> <?= $user['name'] ?> </dd>
 
-    <dt class="col-sm-3">E-mail</dt>
-    <dd class="col-sm-9"><?= $user['email'] ?></dd>
+    <dt class="col-sm-3"> E-mail </dt>
+    <dd class="col-sm-9"> <?= $user['email'] ?> </dd>
 
-    <dt class="col-sm-3">Usuário</dt>
-    <dd class="col-sm-9"><?= $user['username'] ?></dd>
+    <dt class="col-sm-3"> Usuário </dt>
+    <dd class="col-sm-9"> <?= $user['username'] ?> </dd>
 </dl>
