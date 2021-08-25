@@ -206,7 +206,9 @@ class UsersController extends AppController
             'contain' => [],
         ]);
 
-        if($this->request->is(['patch', 'post', 'put'])) {
+        $imageOld = $user->image;
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
             $imageName = $this->request->getData()['image']['name'];
             $imageTemp = $this->request->getData()['image']['tmp_name'];
             
@@ -214,9 +216,13 @@ class UsersController extends AppController
             $user->id     = $userId;
             $user->image = $imageName;
 
-            $path = "files/user/".$userId."/".$imageName;
+            $path = "files/user/".$userId."/";
             
-            if (move_uploaded_file($imageTemp, WWW_ROOT. $path)) {               
+            if (move_uploaded_file($imageTemp, WWW_ROOT . $path . $imageName)) { 
+                if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
+                    unlink( WWW_ROOT . $path . $imageOld );
+                }   
+
                 if ($this->Users->save($user)) {
                     if($this->Auth->user('id') === $user->id){
                         $user = $this->Users->get($userId, [
