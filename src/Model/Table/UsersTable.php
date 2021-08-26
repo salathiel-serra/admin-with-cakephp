@@ -50,35 +50,38 @@ class UsersTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->allowEmpty('id', 'create');
 
         $validator
             ->scalar('name')
             ->maxLength('name', 50)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmpty('name');
 
         $validator
             ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->notEmpty('email');
 
         $validator
             ->scalar('username')
             ->maxLength('username', 50)
-            ->requirePresence('username', 'create')
-            ->notEmptyString('username');
+            ->notEmpty('username');
 
         $validator
             ->scalar('password')
             ->maxLength('password', 220)
-            ->requirePresence('password', 'create')
-            ->notEmptyString('password')
+            ->notEmpty('password')
             ->add('password', [
                 'length' => [
                     'rule' => ['minLength', 6],
                     'message' => 'A senha deve ter no mínimo 6 caracteres'
                 ]
+            ]);
+        
+        $validator
+            ->notEmpty('image', 'É obrigatório selecionar a foto')
+            ->add('image', 'file', [
+                'rule' => ['mimeType', ['image/jpeg', 'image/png']],
+                'message' => 'Arquivo inválido. Selecione foto JPEG ou PNG'
             ]);
 
         return $validator;

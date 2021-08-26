@@ -198,27 +198,37 @@ class UsersController extends AppController
     {
         $userId = $this->Auth->user('id');
         $user = $this->Users->get($userId);
+
         $imageOld = $user->image;
 
+        $user = $this->Users->newEntity();
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
             
-            $path = WWW_ROOT.'files'.DS.'user'.DS.$userId.DS;
+            $user->id    = $userId;
+            $user->image = $this->Users->slug( $this->request->getData()['image']['name'] );
 
-            $user = $this->Users->newEntity();
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $path = WWW_ROOT.'files'.DS.'user'.DS.$userId.DS;
+                
+                $imageRequest = $this->request->getData()['image'];
+                $imageRequest['name'] = $user->image;
 
-            $user->image = $this->Users->singleUpload( $this->request->getData()['image'], $path  );
+                if ($this->Users->singleUpload($imageRequest, $path) ) {
 
-            if ($user->image) {
-
-                $user->id = $userId;
-                if ($this->Users->save($user)) {
                     if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
                         unlink( $path . $imageOld );
                     }
 
                     $this->Flash->success(__('Foto atualizada com sucesso'));
+                    return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
+
+                } else {
+                    $user->image = $imageOld;
+                    $this->Users->save($user);
+                    $this->Flash->danger(__('Erro ao atualizar foto. Falha ao realizar upload'));
                 }
+
             } else {
                 $this->Flash->danger(__('Erro ao atualizar foto'));
             }
