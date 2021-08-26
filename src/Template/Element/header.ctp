@@ -9,8 +9,8 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle menu-header" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
                     
-                    <?php if(!empty($userLogged['image'])) { ?>
-                        <?= $this->Html->image('../files/user/'.$userLogged['id'].'/'.$userLogged['image'],
+                    <?php if(!empty($userLogged->image)) { ?>
+                        <?= $this->Html->image('../files/user/'.$userLogged->id.'/'.$userLogged->image,
                         ['class'=>'rounded-circle', 'width' => '50', 'height' => '50']) ?>
                     <?php } else { ?>
                         <?= $this->Html->image('../files/user/avatar-default.jpeg',
@@ -19,7 +19,7 @@
 
                     &nbsp;
                     <span class="d-none d-sm-inline"> 
-                        <?= current( str_word_count( $userLogged['name'],2 ) ); ?> 
+                        <?= current( str_word_count( $userLogged->name,2 ) ); ?> 
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -29,8 +29,7 @@
                     )?>
                     <?= $this->Html->link('<i class="fas fa-sign-out-alt"></i> Sair',
                         ['controller' => 'Users', 'action' => 'logout'],
-                        ['class' => 'dropdown-item', 'escape' => false],
-                        []
+                        ['class' => 'dropdown-item', 'escape' => false]
                     )?>
                 </div>
             </li>
