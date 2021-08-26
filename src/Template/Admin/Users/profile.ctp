@@ -20,12 +20,12 @@
 </div><hr>
 <?= $this->Flash->render() ?>
 
-<dl class="row">
+<dl class="row text-center">
     <dt class="col-sm-3">Foto</dt>
     <dd class="col-sm-9" style="margin-bottom:30px;">
         <?php 
-            if(!empty($userLogged['image'])) { 
-                echo $this->Html->image('../files/user/'.$userLogged['id'].'/'.$userLogged['image'],
+            if(!empty($user->image)) { 
+                echo $this->Html->image('../files/user/'.$user->id.'/'.$user->image,
                 ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);
             } else {
                 echo $this->Html->image('../files/user/avatar-default.jpeg',
@@ -37,11 +37,11 @@
     </dd>
 
     <dt class="col-sm-3"> Nome </dt>
-    <dd class="col-sm-9"> <?= $user['name'] ?> </dd>
+    <dd class="col-sm-9"> <?= $user->name ?> </dd>
 
     <dt class="col-sm-3"> E-mail </dt>
-    <dd class="col-sm-9"> <?= $user['email'] ?> </dd>
+    <dd class="col-sm-9"> <?= $user->email ?> </dd>
 
     <dt class="col-sm-3"> Usuário </dt>
-    <dd class="col-sm-9"> <?= $user['username'] ?> </dd>
+    <dd class="col-sm-9"> <?= $user->username ?> </dd>
 </dl>

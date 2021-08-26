@@ -147,7 +147,8 @@ class UsersController extends AppController
 
     public function profile() 
     {
-        $user = $this->Auth->user();
+        $userId = $this->Auth->user('id');
+        $user   = $this->Users->get($userId);
 
         $this->set(compact('user'));
     }
@@ -161,15 +162,9 @@ class UsersController extends AppController
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            
             if ($this->Users->save($user)) {
-                
-                if ($userId === $user->id) {
-                    $data = $user->toArray();
-                    $this->Auth->setUser($data);
-                }
-
                 $this->Flash->success(__('Perfil atualizado com sucesso.'));
-
                 return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
             }
             $this->Flash->danger(__('Erro ao atualizar perfil.'));
@@ -187,12 +182,12 @@ class UsersController extends AppController
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            
             if ($this->Users->save($user)) {
-                
                 $this->Flash->success(__('Senha atualizada com sucesso.'));
-
                 return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
             }
+
             $this->Flash->danger(__('Erro ao atualizar senha.'));
         }
 
@@ -221,13 +216,6 @@ class UsersController extends AppController
                     if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
                         unlink( $path . $imageOld );
                     }
-
-                    if($this->Auth->user('id') === $user->id){
-                        $user = $this->Users->get($userId, [
-                                'contain' => []
-                            ]);
-                        $this->Auth->setUser($user);
-                    } 
 
                     $this->Flash->success(__('Foto atualizada com sucesso'));
                 }
