@@ -23,17 +23,36 @@
 <dl class="row text-center">
     <dt class="col-sm-3">Foto</dt>
     <dd class="col-sm-9" style="margin-bottom:30px;">
-        <?php 
+        <div class="img-profile">
+            <?php 
             if(!empty($user->image)) { 
                 echo $this->Html->image('../files/user/'.$user->id.'/'.$user->image,
-                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);
-            } else {
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']); ?>
+                
+                <div class="edit">
+                    <?= $this->Html->link('<i class="fas fa-pencil-alt"></i>',
+                        ['controller' => 'Users', 'action' => 'changeProfileImage'],
+                        ['escape' => false]
+                    ) ?>
+                    
+                </div>
+
+                <?php 
+            } else { 
                 echo $this->Html->image('../files/user/avatar-default.jpeg',
-                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);  ?>
+
+                <div class="edit">
+                    <?= $this->Html->link('<i class="fas fa-pencil-alt"></i>',
+                        ['controller' => 'Users', 'action' => 'changeProfileImage'],
+                        ['escape' => false]
+                    ) ?>
+                    
+                </div>
+                <?php 
             } 
-        ?>
-        <?= $this->Html->link(__('Alterar foto'), ['action' => 'changeProfileImage'], ['class' => 'btn btn-sm btn-outline-primary']); ?>
-        
+            ?>
+        </div>
     </dd>
 
     <dt class="col-sm-3"> Nome </dt>
