@@ -13,3 +13,19 @@ $(document).ready(function () {
         parent.addClass('show');
     }
 });
+
+function imagePreview() {
+    var image   = document.querySelector('input[name=image]').files[0];
+    var preview = document.querySelector('#image-preview');
+
+    var reader = new FileReader();
+    reader.onloadend = function(){
+        preview.src = reader.result;
+    }
+
+    if (image) {
+        reader.readAsDataURL(image);
+    } else {
+        preview.src = "";
+    }
+}

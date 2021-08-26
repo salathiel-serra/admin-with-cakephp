@@ -19,11 +19,22 @@
 <?= $this->Flash->render() ?>
 
 <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
-  <div class="form-row">
-      <div class="form-group col-md-12">
-          <label><span class="text-danger">*</span> Foto</label>
-          <?= $this->Form->file('image', ['class' => 'form-control', 'label' => false]) ?>
-      </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+        <label><span class="text-danger">*</span> Foto <small>(150x150)</small> </label> <br>
+        <?= $this->Form->file('image', ['label' => false, 'onchange' => 'imagePreview()']) ?>
+    </div>
+    <div class="form-group col-md-6 text-center">
+        <?php
+            if ($user->image != NULL) {
+                $image = '../../files/user/'.$user->id.'/'.$user->image;
+            } else {
+                $image = '../../files/user/preview_img.png';
+            }
+        ?>
+
+        <img src="<?= $image ?>" alt="<?= $user->name ?>" class="img-thumbnail" style="width:150px; height:150px;" id="image-preview">
+    </div>
   </div>
   <p>
       <span class="text-danger">* </span>Campo obrigatório
