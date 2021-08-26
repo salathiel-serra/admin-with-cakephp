@@ -98,4 +98,11 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    public function getUserData($userId)
+    {
+        return $this->find()->select(['id','name','email','image'])
+                              ->where(['Users.id' => $userId])
+                              ->first();
+    }
 }

@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -76,7 +77,10 @@ class AppController extends Controller
             if (($this->request->getParam(['action']) != NULL) AND ($this->request->getParam(['action']) == 'login')) {
                 $this->viewBuilder()->setLayout('login');
             } else {
-                $userLogged = $this->Auth->user();
+               
+                $user       = TableRegistry::get('Users');
+                $userLogged = $user->getUserData( $this->Auth->user('id') );
+
                 $this->set( compact('userLogged') );
                 
                 $this->viewBuilder()->setLayout('admin');
