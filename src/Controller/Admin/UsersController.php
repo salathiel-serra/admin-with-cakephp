@@ -202,40 +202,37 @@ class UsersController extends AppController
     public function changeProfileImage()
     {
         $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId, [
-            'contain' => [],
-        ]);
-
+        $user = $this->Users->get($userId);
         $imageOld = $user->image;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $imageName = $this->request->getData()['image']['name'];
-            $imageTemp = $this->request->getData()['image']['tmp_name'];
+            $user = $this->Users->patchEntity($user, $this->request->data);
             
-            $user         = $this->Users->newEntity();
-            $user->id     = $userId;
-            $user->image = $imageName;
+            $path = WWW_ROOT.'files'.DS.'user'.DS.$userId.DS;
 
-            $path = "files/user/".$userId."/";
-            
-            if (move_uploaded_file($imageTemp, WWW_ROOT . $path . $imageName)) { 
-                if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
-                    unlink( WWW_ROOT . $path . $imageOld );
-                }   
+            $user = $this->Users->newEntity();
 
+            $user->image = $this->Users->singleUpload( $this->request->getData()['image'], $path  );
+
+            if ($user->image) {
+
+                $user->id = $userId;
                 if ($this->Users->save($user)) {
+                    if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
+                        unlink( $path . $imageOld );
+                    }
+
                     if($this->Auth->user('id') === $user->id){
                         $user = $this->Users->get($userId, [
                                 'contain' => []
                             ]);
                         $this->Auth->setUser($user);
-                    }                    
+                    } 
 
                     $this->Flash->success(__('Foto atualizada com sucesso'));
-                    return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
-                }else{
-                    $this->Flash->danger(__('Erro ao atualizar foto'));
                 }
+            } else {
+                $this->Flash->danger(__('Erro ao atualizar foto'));
             }
         }
 
