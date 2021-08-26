@@ -205,7 +205,7 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             
             $user->id    = $userId;
-            $user->image = $this->Users->slug( $this->request->getData()['image']['name'] );
+            $user->image = $this->Users->slugSingleUpload( $this->request->getData()['image']['name'] );
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {

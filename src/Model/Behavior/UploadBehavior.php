@@ -3,6 +3,8 @@ namespace App\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
 
 /**
  * Upload behavior
@@ -18,6 +20,8 @@ class UploadBehavior extends Behavior
 
     public function singleUpload(array $file, $path)
     {
+        $this->createDestiny($path);
+
         return $this->upload($file, $path);
     }
 
@@ -32,7 +36,7 @@ class UploadBehavior extends Behavior
         } 
     }
 
-    public function slug($name)
+    public function slugSingleUpload($name)
     {
         $formato['a'] = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:,\\\'<>°ºª';
         $formato['b'] = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                ';
@@ -42,5 +46,14 @@ class UploadBehavior extends Behavior
         $name = str_replace(['-----', '----', '---', '--'], '-', $name);
 
         return strtolower($name);
+    }
+
+    public function createDestiny($path)
+    {
+        $destiny = new Folder($path);
+
+        if (is_null($destiny->path)) {
+            $destiny->create($path);
+        }
     }
 }
