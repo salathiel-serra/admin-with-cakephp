@@ -26,14 +26,14 @@
     </div>
     <div class="form-group col-md-6 text-center">
         <?php
-            if ($userLogged->image !== NULL) {
-                $image = '../../files/user/'.$userLogged->id.'/'.$userLogged->image;
+            if ($user->image !== NULL) {
+                $image = '../../files/user/'.$user->id.'/'.$user->image;
             } else {
                 $image = '../../files/user/preview_img.png';
             }
         ?>
 
-        <img src="<?= $image ?>" alt="<?= $userLogged->name ?>" class="img-thumbnail" style="width:150px; height:150px;" id="image-preview">
+        <img src="<?= $image ?>" alt="<?= $user->name ?>" class="img-thumbnail" style="width:150px; height:150px;" id="image-preview">
     </div>
   </div>
   <p>

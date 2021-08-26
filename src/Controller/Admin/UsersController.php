@@ -201,8 +201,8 @@ class UsersController extends AppController
 
         $imageOld = $user->image;
 
-        $user = $this->Users->newEntity();
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->newEntity();
             
             $user->id    = $userId;
             $user->image = $this->Users->slug( $this->request->getData()['image']['name'] );
