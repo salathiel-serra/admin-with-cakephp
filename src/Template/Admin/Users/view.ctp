@@ -27,10 +27,42 @@
         </div>
     </div>
 </div><hr>
+<?= $this->Flash->render() ?>
 
-<dl class="row">
-    <dt class="col-sm-3">ID</dt>
-    <dd class="col-sm-9"><?= $this->Number->format($user->id) ?></dd>
+<dl class="row text-center">
+<dt class="col-sm-3">Foto</dt>
+    <dd class="col-sm-9" style="margin-bottom:30px;">
+        <div class="img-profile">
+            <?php 
+            if(!empty($user->image)) { 
+                echo $this->Html->image('../files/user/'.$user->id.'/'.$user->image,
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']); ?>
+                
+                <div class="edit">
+                    <?= $this->Html->link('<i class="fas fa-pencil-alt"></i>',
+                        ['controller' => 'Users', 'action' => 'changeUserImage', $user->id],
+                        ['escape' => false]
+                    ) ?>
+                    
+                </div>
+
+                <?php 
+            } else { 
+                echo $this->Html->image('../files/user/avatar-default.jpeg',
+                ['class'=>'rounded-circle', 'width' => '120', 'height' => '120']);  ?>
+
+                <div class="edit">
+                    <?= $this->Html->link('<i class="fas fa-pencil-alt"></i>',
+                        ['controller' => 'Users', 'action' => 'changeUserImage', $user->id],
+                        ['escape' => false]
+                    ) ?>
+                    
+                </div>
+                <?php 
+            } 
+            ?>
+        </div>
+    </dd>
 
     <dt class="col-sm-3">Nome</dt>
     <dd class="col-sm-9"><?= h($user->name) ?></dd>
