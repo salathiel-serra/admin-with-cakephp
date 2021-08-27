@@ -29,7 +29,11 @@
 
     <p class="text-center">
         <hr>
-        Esqueceu a senha? <br>
+        <?= $this->Html->link(__('Esqueceu a senha?'), [
+            'controller' => 'Users', 'action' => 'resetPassword'
+        ]) ?>
+        
+        <br>
 
         <?= $this->Html->link(__('Não possui cadastro?'), [
             'controller' => 'Users', 'action' => 'register'

@@ -17,7 +17,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['register','logout','confirmEmail']);
+        $this->Auth->allow(['register','logout','confirmEmail','resetPassword']);
     }
 
     public function index()
@@ -87,6 +87,13 @@ class UsersController extends AppController
             $this->Flash->danger(__('Erro ao atualizar senha do usuário: '.$user->name));
         }
         $this->set(compact('user'));
+    }
+
+    public function resetPassword()
+    {
+       $user = $this->Users->newEntity();
+
+       $this->set(compact('user'));
     }
 
     public function changeUserImage($id = NULL)
@@ -274,7 +281,7 @@ class UsersController extends AppController
                 $user->host_name = "http://localhost:8765/admin"; 
 
                 // Enviando E-mail
-                $this->getMailer('User')->send('registerUser', [$user]);
+                // $this->getMailer('User')->send('registerUser', [$user]);
 
                 $this->Flash->success(__('Cadastro realizado com sucesso.'));
 
