@@ -107,14 +107,21 @@ class UsersTable extends Table
     public function getUserData($userId)
     {
         return $this->find()->select(['id','name','email','image'])
-                              ->where(['Users.id' => $userId])
-                              ->first();
+                            ->where(['Users.id' => $userId])
+                            ->first();
     }
 
     public function getConfirmEmail($email_verification_code)
     {
         return $this->find()->select(['id'])
-                              ->where(['Users.email_verification_code' => $email_verification_code])
-                              ->first();
+                            ->where(['Users.email_verification_code' => $email_verification_code])
+                            ->first();
+    }
+
+    public function getTemporaryPassword($email)
+    {
+        return $this->find()->select(['id','name','email','username','password_temporary'])
+                            ->where(['Users.email' => $email])
+                            ->first();
     }
 }

@@ -6,16 +6,11 @@
     <div class="form-group">
       <?php 
         echo $this->Form->control('email', [
-              'class'       => 'form-control', 
-              'placeholder' => 'Seu e-mail registrado',
-              'label'       => false
-          ]); 
-        echo $this->Form->control('password', [
             'class'       => 'form-control', 
-            'placeholder' => 'Senha',
+            'placeholder' => 'Seu e-mail registrado',
             'label'       => false
-          ]); 
-      ?>
+        ]);  
+    ?>
     </div>
 
     <?= $this->Form->button(__('Redefinir'), ['class' => 'btn btn-large btn-warning btn-block']) ?>

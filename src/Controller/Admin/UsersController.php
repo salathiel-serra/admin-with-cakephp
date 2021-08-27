@@ -91,9 +91,37 @@ class UsersController extends AppController
 
     public function resetPassword()
     {
-       $user = $this->Users->newEntity();
+        $user = $this->Users->newEntity();
+    
+        if ($this->request->is('post')) {
+            $userTable = TableRegistry::get('Users');
+            $temporaryPassword = $userTable->getTemporaryPassword( $this->request->getData()['email'] );
 
-       $this->set(compact('user'));
+            if ($temporaryPassword) {
+                if ($temporaryPassword->password_temporary == "") {
+                    $user->id                 = $temporaryPassword->id;
+                    $user->password_temporary = Security::hash( $this->request->getData()['email'] . $temporaryPassword->id, 'sha256', false);
+
+                    $userTable->save($user);
+
+                    $temporaryPassword->password_temporary = $user->password_temporary;
+                }
+                /**
+                 * Trecho abaixo para utilizar em servidor de hospedagem
+                 * $user->host_name = Router::fullBaseUrl().$this->request->getAttribute('webroot').$this->request->getParam('prefix');
+                */
+                
+                $temporaryPassword->host_name = "http://localhost:8765/admin"; 
+
+                $this->getMailer('User')->send('resetPassword', [$temporaryPassword]);
+
+                $this->Flash->success(__('E-mail enviado com sucesso, verifique a sua caixa de entrada.'));
+                return $this->redirect(['controller' => 'Users','action' => 'login']);
+            } 
+            $this->Flash->danger(__('Erro: O e-mail informado não foi localizado!'));
+        }
+        // password_temporary
+        $this->set(compact('user'));
     }
 
     public function changeUserImage($id = NULL)
