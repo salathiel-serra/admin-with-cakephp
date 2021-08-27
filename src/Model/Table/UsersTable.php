@@ -37,8 +37,9 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-        $this->addBehavior('Upload');
+        // $this->addBehavior('Upload');
         $this->addBehavior('ResizeUpload');
+        $this->addBehavior('DeleteFile');
     }
 
     /**
