@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 class UsersController extends AppController
 {
@@ -255,6 +256,16 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
+
+                $textEmail = "Caro(a), ".$user->name. "<br><br> Obrigado por se cadastrar. <br><br>";
+                
+                $email = new Email('envemail');
+                $email->setTo($user->email)
+                        ->setProfile('envemail')
+                        ->setEmailFormat('html')
+                        ->setSubject('Bem vindo(a)')
+                        ->send($textEmail);
+
                 $this->Flash->success(__('Cadastro realizado com sucesso.'));
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'login']);
