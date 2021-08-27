@@ -4,9 +4,12 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
 
 class UsersController extends AppController
 {
+    use MailerAwareTrait;
+
     // Permite acesso à metódos/views sem autenticação
     public function beforeFilter(Event $event)
     {
@@ -256,15 +259,8 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-
-                $textEmail = "Caro(a), ".$user->name. "<br><br> Obrigado por se cadastrar. <br><br>";
-                
-                $email = new Email('envemail');
-                $email->setTo($user->email)
-                        ->setProfile('envemail')
-                        ->setEmailFormat('html')
-                        ->setSubject('Bem vindo(a)')
-                        ->send($textEmail);
+                // Enviando E-mail
+                $this->getMailer('User')->send('registerUser', [$user]);
 
                 $this->Flash->success(__('Cadastro realizado com sucesso.'));
 
