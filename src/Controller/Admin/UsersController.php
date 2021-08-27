@@ -2,21 +2,17 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
-/**
- * Users Controller
- *
- * @property \App\Model\Table\UsersTable $Users
- *
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
 class UsersController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null
-     */
+    // Permite acesso à metódos/views sem autenticação
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['register','logout']);
+    }
+
     public function index()
     {
         $this->paginate = [
@@ -28,13 +24,6 @@ class UsersController extends AppController
         $this->set(compact('users'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
@@ -44,11 +33,6 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
     public function add()
     {
         $user = $this->Users->newEntity();
@@ -64,13 +48,6 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function edit($id = null)
     {
         $user = $this->Users->get($id, [
@@ -145,13 +122,6 @@ class UsersController extends AppController
         $this->set( compact('user') );
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
@@ -277,5 +247,20 @@ class UsersController extends AppController
         }
 
         $this->set( compact('user') );
+    }
+
+    public function register()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Cadastro realizado com sucesso.'));
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            }
+            $this->Flash->danger(__('Erro ao realizar cadastro.'));
+        }
+        $this->set(compact('user'));
     }
 }

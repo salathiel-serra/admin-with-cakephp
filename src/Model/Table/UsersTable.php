@@ -57,21 +57,21 @@ class UsersTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 50)
-            ->notEmpty('name');
+            ->notEmpty('name', 'Este campo é obrigatório');
 
         $validator
             ->email('email')
-            ->notEmpty('email');
+            ->notEmpty('email', 'Este campo é obrigatório');
 
         $validator
             ->scalar('username')
             ->maxLength('username', 50)
-            ->notEmpty('username');
+            ->notEmpty('username', 'Este campo é obrigatório');
 
         $validator
             ->scalar('password')
             ->maxLength('password', 220)
-            ->notEmpty('password')
+            ->notEmpty('password', 'Este campo é obrigatório')
             ->add('password', [
                 'length' => [
                     'rule' => ['minLength', 6],

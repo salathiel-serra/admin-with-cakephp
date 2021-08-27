@@ -27,5 +27,12 @@
 
     <?= $this->Form->button(__('Acessar'), ['class' => 'btn btn-large btn-primary btn-block']) ?>
 
-    <p class="text-center">Esqueceu a senha?</p>
+    <p class="text-center">
+        <hr>
+        Esqueceu a senha? <br>
+
+        <?= $this->Html->link(__('Não possui cadastro?'), [
+            'controller' => 'Users', 'action' => 'register'
+        ]) ?> 
+    </p>
 <?= $this->Form->end() ?>
