@@ -115,7 +115,7 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             
             $user->id    = $id;
-            $user->image = $this->Users->slugSingleUpload( $this->request->getData()['image']['name'] );
+            $user->image = $this->Users->slugUploadResizedImage( $this->request->getData()['image']['name'] );
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -124,7 +124,7 @@ class UsersController extends AppController
                 $imageRequest = $this->request->getData()['image'];
                 $imageRequest['name'] = $user->image;
 
-                if ($this->Users->singleUpload($imageRequest, $path) ) {
+                if ($this->Users->uploadResizedImage($imageRequest, $path, 150, 150) ) {
 
                     if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
                         unlink( $path . $imageOld );
@@ -247,7 +247,7 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             
             $user->id    = $userId;
-            $user->image = $this->Users->slugSingleUpload( $this->request->getData()['image']['name'] );
+            $user->image = $this->Users->slugUploadResizedImage( $this->request->getData()['image']['name'] );
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -256,7 +256,7 @@ class UsersController extends AppController
                 $imageRequest = $this->request->getData()['image'];
                 $imageRequest['name'] = $user->image;
 
-                if ($this->Users->singleUpload($imageRequest, $path) ) {
+                if ($this->Users->uploadResizedImage($imageRequest, $path, 150, 150) ) {
 
                     if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
                         unlink( $path . $imageOld );
