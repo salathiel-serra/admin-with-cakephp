@@ -109,7 +109,7 @@ class UsersController extends AppController
     {
         $user = $this->Users->get($id);
 
-        $imageOld = $user->image;
+        $oldImage = $user->image;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->newEntity();
@@ -126,15 +126,13 @@ class UsersController extends AppController
 
                 if ($this->Users->uploadResizedImage($imageRequest, $path, 150, 150) ) {
 
-                    if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
-                        unlink( $path . $imageOld );
-                    }
+                    $this->Users->deleteFile($path, $oldImage, $user->image);
 
                     $this->Flash->success(__('Foto atualizada com sucesso'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
 
                 } else {
-                    $user->image = $imageOld;
+                    $user->image = $oldImage;
                     $this->Users->save($user);
                     $this->Flash->danger(__('Erro ao atualizar foto. Falha ao realizar upload'));
                 }
@@ -158,6 +156,10 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+
+        $path = WWW_ROOT.'files'.DS.'user'.DS.$user->id.DS;
+        $this->Users->deleteDirectory($path);
+        
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('Usuário removido com sucesso.'));
         } else {
@@ -241,7 +243,7 @@ class UsersController extends AppController
         $userId = $this->Auth->user('id');
         $user = $this->Users->get($userId);
 
-        $imageOld = $user->image;
+        $oldImage = $user->image;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->newEntity();
@@ -258,15 +260,13 @@ class UsersController extends AppController
 
                 if ($this->Users->uploadResizedImage($imageRequest, $path, 150, 150) ) {
 
-                    if (!is_null($imageOld) AND ($imageOld !== $user->image)) {
-                        unlink( $path . $imageOld );
-                    }
+                    $this->Users->deleteFile($path, $oldImage, $user->image);
 
                     $this->Flash->success(__('Foto atualizada com sucesso'));
                     return $this->redirect(['controller' => 'Users', 'action' => 'profile']);
 
                 } else {
-                    $user->image = $imageOld;
+                    $user->image = $oldImage;
                     $this->Users->save($user);
                     $this->Flash->danger(__('Erro ao atualizar foto. Falha ao realizar upload'));
                 }
