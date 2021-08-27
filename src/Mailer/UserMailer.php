@@ -22,7 +22,11 @@ class UserMailer extends Mailer
                 ->setEmailFormat('html')
                 ->setTemplate('welcome')
                 ->setLayout('user')
-                ->setViewVars(['name' => $user->name])
-                ->setSubject('Bem vindo(a)');
+                ->setViewVars([
+                    'name' => $user->name, 
+                    'email_verification_code' => $user->email_verification_code,
+                    'host_name' => $user->host_name
+                ])
+                ->setSubject('Confirme o seu e-mail | Admin-With-CakePHP');
     }
 }

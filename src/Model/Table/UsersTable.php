@@ -110,4 +110,11 @@ class UsersTable extends Table
                               ->where(['Users.id' => $userId])
                               ->first();
     }
+
+    public function getConfirmEmail($email_verification_code)
+    {
+        return $this->find()->select(['id'])
+                              ->where(['Users.email_verification_code' => $email_verification_code])
+                              ->first();
+    }
 }

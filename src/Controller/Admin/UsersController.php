@@ -5,6 +5,9 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\Utility\Security;
+use Cake\Routing\Router;
+use Cake\ORM\TableRegistry;
 
 class UsersController extends AppController
 {
@@ -14,7 +17,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['register','logout']);
+        $this->Auth->allow(['register','logout','confirmEmail']);
     }
 
     public function index()
@@ -258,7 +261,18 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            
+            $baseCode = $this->request->getData('password') . $this->request->getData('email');
+            $user->email_verification_code = Security::hash($baseCode, 'sha256', false);
+
             if ($this->Users->save($user)) {
+                /**
+                 * Trecho abaixo para utilizar em servidor de hospedagem
+                 * $user->host_name = Router::fullBaseUrl().$this->request->getAttribute('webroot').$this->request->getParam('prefix');
+                */
+                
+                $user->host_name = "http://localhost:8765/admin"; 
+
                 // Enviando E-mail
                 $this->getMailer('User')->send('registerUser', [$user]);
 
@@ -269,5 +283,27 @@ class UsersController extends AppController
             $this->Flash->danger(__('Erro ao realizar cadastro.'));
         }
         $this->set(compact('user'));
+    }
+
+    public function confirmEmail($email_verification_code = NULL)
+    {
+        $userTable    = TableRegistry::get('Users');
+        $confirmEmail = $userTable->getConfirmEmail($email_verification_code);
+
+        if ($confirmEmail) {
+            $user                 = $this->Users->newEntity();
+            $user->id             = $confirmEmail->id;
+            $user->email_verified = '1';
+            
+            if ($userTable->save($user)) {
+                $this->Flash->success(__('E-mail confirmado com sucesso!'));
+            } else {
+                $this->Flash->danger(__('Erro: E-mail não foi confirmado'));
+            }
+        } else {
+            $this->Flash->danger(__('Erro: E-mail e/ou código de verificação inválido(s)'));
+        }
+
+        $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 }
