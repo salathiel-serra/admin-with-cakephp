@@ -13,11 +13,13 @@ class UsersController extends AppController
 {
     use MailerAwareTrait;
 
-    // Permite acesso à metódos/views sem autenticação
+    //----- Permite acesso à metódos/views sem autenticação
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['register','logout','confirmEmail','resetPassword']);
+        $this->Auth->allow([
+            'register', 'logout', 'confirmEmail', 'resetPassword', 'updatePassword'
+        ]);
     }
 
     public function index()
@@ -27,7 +29,6 @@ class UsersController extends AppController
         ];
 
         $users = $this->paginate($this->Users);
-
         $this->set(compact('users'));
     }
 
@@ -45,9 +46,9 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+           
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário cadastrado com sucesso.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->danger(__('Erro ao cadastrar usuário.'));
@@ -62,9 +63,9 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário atualizado com sucesso.'));
-
                 return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
             }
             $this->Flash->danger(__('Erro ao atualizar usuário.'));
@@ -79,9 +80,9 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+           
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Senha do usuário: '.$user->name.', atualizada com sucesso.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->danger(__('Erro ao atualizar senha do usuário: '.$user->name));
@@ -99,8 +100,8 @@ class UsersController extends AppController
 
             if ($temporaryPassword) {
                 if ($temporaryPassword->password_temporary == "") {
-                    $user->id                 = $temporaryPassword->id;
-                    $user->password_temporary = Security::hash( $this->request->getData()['email'] . $temporaryPassword->id, 'sha256', false);
+                    $user->id = $temporaryPassword->id;
+                    $user->password_temporary = Security::hash( $this->request->getData()['email'] . $temporaryPassword->id . date("Y-m-d H:i:s"), 'sha256', false);
 
                     $userTable->save($user);
 
@@ -120,8 +121,36 @@ class UsersController extends AppController
             } 
             $this->Flash->danger(__('Erro: O e-mail informado não foi localizado!'));
         }
-        // password_temporary
+
         $this->set(compact('user'));
+    }
+
+    // 'http://localhost:8765/admin/users/update-password/098d89f44ba2c0bf2fa58ea51afba2e3ffecabbae0de2156b6b93ca7e8d094ac'
+    public function updatePassword($password_temporary = NULL)
+    {
+        $userTable = TableRegistry::get('Users');
+        $user = $userTable->getCurrentPassword($password_temporary);
+        
+        if ($user) {
+
+            if ($this->request->is(['patch','post','put'])) {
+                $user = $this->Users->patchEntity( $user, $this->request->getData() );
+                $user->password_temporary = NULL;
+                if ($this->Users->save($user)) {
+                   
+                    $this->Flash->success(__('Senha redefinida com sucesso'));
+                    return $this->redirect(['controller' => 'Users','action' => 'login']);
+                
+                } else {
+                    $this->Flash->danger(__('Erro ao redefinir senha'));
+                }
+            }
+            
+            $this->set( compact('user'));
+        } else {
+            $this->Flash->danger(__('Erro: Link inválido'));
+            return $this->redirect(['controller' => 'Users','action' => 'login']);
+        }        
     }
 
     public function changeUserImage($id = NULL)
@@ -181,6 +210,7 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    //----- Os métodos abaixo são referentes ao acesso e saída da aplicação
     public function login()
     {
         if ($this->request->is('post')) {
@@ -201,6 +231,7 @@ class UsersController extends AppController
         return $this->redirect( $this->Auth->logout() );
     }
 
+    //----- Os métodos abaixo permitem ao usuário logado acessar/atualizar seus dados
     public function profile() 
     {
         $userId = $this->Auth->user('id');
@@ -291,6 +322,7 @@ class UsersController extends AppController
         $this->set( compact('user') );
     }
 
+    //----- Os métodos abaixo são referentes ao cadastro externo
     public function register()
     {
         $user = $this->Users->newEntity();

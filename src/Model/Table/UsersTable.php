@@ -124,4 +124,12 @@ class UsersTable extends Table
                             ->where(['Users.email' => $email])
                             ->first();
     }
+
+    public function getCurrentPassword($password_temporary)
+    {
+        return $this->find()->select(['id'])
+                            ->where(['Users.password_temporary' => $password_temporary])
+                            ->first();
+    }
+    
 }
