@@ -83,7 +83,7 @@ class AppController extends Controller
                 $this->viewBuilder()->setLayout('login');
 
             } else {
-               
+                
                 $user       = TableRegistry::get('Users');
                 $userLogged = $user->getUserData( $this->Auth->user('id') );
 
@@ -92,6 +92,8 @@ class AppController extends Controller
                 $this->viewBuilder()->setLayout('admin');
             }
             
+        } else {
+            $this->viewBuilder()->setLayout('site');
         }
 
     }

@@ -46,24 +46,12 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    $routes->connect('/', ['prefix' => 'admin', 'controller' => 'Welcome', 'action' => 'index']);
-
-    $routes->connect('/pages/*', ['prefix' => 'admin', 'controller' => 'Welcome', 'action' => 'index']);
+    $routes->connect('/', ['controller' => 'Home', 'action' => 'index']);
+    
+    $routes->connect('/pages/*', ['controller' => 'Home', 'action' => 'index']);
 
     $routes->fallbacks(DashedRoute::class);
 });
-
-/*
- * If you need a different set of middleware or none at all,
- * open new scope and define routes there.
- *
- * ```
- * Router::scope('/api', function (RouteBuilder $routes) {
- *     // No $routes->applyMiddleware() here.
- *     // Connect API actions here.
- * });
- * ```
- */
 
 Router::prefix('admin', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
